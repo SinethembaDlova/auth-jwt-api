@@ -1,0 +1,19 @@
+{
+  "name": "auth-jwt-api",
+  "version": "1.0.0",
+  "description": "Authentication through json web token.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon indexnpm.js"
+  },
+  "author": "Sinethemba Dlova",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.4",
+    "nodemon": "^2.0.16",
+    "uuid": "^8.3.2"
+  }
+}
