@@ -11,7 +11,6 @@ module.exports = async (req, res) => {
       last_name
     } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("hashed password: ", hashedPassword);
     const user = await User.create({ 
       username,
       password: hashedPassword, 
