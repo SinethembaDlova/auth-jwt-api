@@ -1,7 +1,0 @@
-{
-    "env": {
-       "MONGO_DB": "mongodb+srv://OfferZen-dLocal:EJ7v5pu6mNrCv5Pp@cluster0.mjbp9.mongodb.net/?retryWrites=true&w=majority"
-    }
-}
-
-
