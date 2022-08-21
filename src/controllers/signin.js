@@ -1,5 +1,5 @@
-require("dotenv").config();
-const User = require("../schemas");
+require('dotenv').config();
+const User = require('../schemas');
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken');
 
