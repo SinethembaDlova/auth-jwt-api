@@ -10,7 +10,6 @@ module.exports = async (req, res) => {
       password
     } = req.body;
     const user = await User.find({ username });
-    console.log('user: ', user);
     if (user.length <= 0) {
       return res.status(204).json({ data: [] })
     } else {
