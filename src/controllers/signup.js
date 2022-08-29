@@ -3,13 +3,19 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res) => {
+  const { 
+    username,
+    password, 
+    first_name, 
+    last_name
+  } = req.body;
+  if (!username || !password || !first_name || !last_name) return res.status(400).json({ 'message': 'Username and password are required.' });
+
+  const duplicate = await User.find({ username });
+  if(duplicate) return res.status(409).json({ 'message': 'An account with this username already exist.' });
+
+
   try {
-    const { 
-      username,
-      password, 
-      first_name, 
-      last_name
-    } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ 
       username,
@@ -17,10 +23,8 @@ module.exports = async (req, res) => {
       first_name, 
       last_name
     });
-    const id = user._id
-    const access_token = await jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET)
-    res.status(201).json({ data: user, access_token });
+    res.status(201).json({ data: user, 'message': 'User successfully created.' });
   } catch (error) {
-      res.status(400).json({ error });
+      res.status(500).json({ error, 'message': error.message });
   }
 };
