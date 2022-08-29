@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
     else {
       if (await bcrypt.compare(password, user[0].password)){
         const id = user[0]._id;
-        const access_token = await jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET)
+        const access_token = await jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
         res.status(200).json({ data: user, access_token })
       }
     }  
