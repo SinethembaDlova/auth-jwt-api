@@ -3,7 +3,7 @@ const User = require('../schemas');
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken');
 
-module.exports = async (req, res) => {
+module.exports = (req, res) => {
   try {
     const { 
       username,
@@ -11,13 +11,13 @@ module.exports = async (req, res) => {
     } = req.body;
     if (!username || !password) return res.status(400).json({ 'message': 'Username or Password are required.' });
 
-    const user = await User.find({ username });
-    if (user.length <= 0) return res.status(401).json({ 'message': 'An aacount with such credentials does not exist'}); 
+    const found_user = await User.find({ username });
+    if (found_user.length <= 0) return res.status(401).json({ 'message': 'An aacount with such credentials does not exist'}); 
     else {
-      if (await bcrypt.compare(password, user[0].password)){
-        const id = user[0]._id;
-        const access_token = await jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
-        const refresh_token = await jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
+      if (await bcrypt.compare(password, found_user[0].password)){
+        const id = found_user[0]._id;
+        const access_token = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
+        const refresh_token = jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 
         res.cookie('jwt', refresh_token, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
         res.status(200).json({ access_token })

@@ -7,6 +7,8 @@ const userSchema = new Schema({
     password: { type: String, required: true },
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
+    refresh_token: { type: String },
+
 });
 
 const User = mongoose.model('User', userSchema);
