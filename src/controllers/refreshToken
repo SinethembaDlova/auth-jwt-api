@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     const refresh_token = cookies.jwt;
 
     const found_user = await User.find({ refresh_token })
-    if (found_user.length <= 0) return res.status(403).json({ 'message': 'This token is not valid.' }); //Forbidden 
+    if (found_user.length <= 0) return res.status(403).json({ 'message': 'This token is not valid.' });
     jwt.verify(
         refresh_token,
         process.env.REFRESH_TOKEN_SECRET,
