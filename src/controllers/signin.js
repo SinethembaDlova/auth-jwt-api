@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         const access_token = await jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
         const refresh_token = await jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 
-        res.status(200).json({ data: user, access_token })
+        res.status(200).json({ access_token })
       }
     }  
   } catch (error) {
