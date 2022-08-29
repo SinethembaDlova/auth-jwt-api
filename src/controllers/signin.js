@@ -19,6 +19,7 @@ module.exports = async (req, res) => {
         const access_token = await jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
         const refresh_token = await jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 
+        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
         res.status(200).json({ access_token })
       }
     }  
