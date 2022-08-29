@@ -9,10 +9,11 @@ module.exports = async (req, res) => {
       username,
       password
     } = req.body;
+    if (!username || !password) return res.status(400).json({ 'message': 'Username or Password are required.' });
+
     const user = await User.find({ username });
-    if (user.length <= 0) {
-      return res.status(204).json({ data: [] })
-    } else {
+    if (user.length <= 0) return res.status(401).json({ 'message': 'An aacount with such credentials does not exist'}); 
+    else {
       if (await bcrypt.compare(password, user[0].password)){
         const id = user[0]._id;
         const access_token = await jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET)
@@ -20,6 +21,6 @@ module.exports = async (req, res) => {
       }
     }  
   } catch (error) {
-    res.status(400).json({ error });
+    res.status(400).json({ error, ' message': error.message });
   }
   };
