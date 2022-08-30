@@ -3,7 +3,7 @@ const User = require('../schemas');
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken');
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   try {
     const { 
       username,
