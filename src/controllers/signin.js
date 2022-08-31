@@ -16,11 +16,11 @@ module.exports = async (req, res) => {
     else {
       if (await bcrypt.compare(password, found_user[0].password)){
         const id = found_user[0]._id;
-        const access_token = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' })
-        const refresh_token = jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
-
+        const access_token = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' });
+        const refresh_token = jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+        const updated_user = await User.findByIdAndUpdate({ _id: id }, { refresh_token }, { upsert:true });
         res.cookie('jwt', refresh_token, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
-        res.status(200).json({ access_token, 'message': 'Successfully refreshed token.' })
+        res.status(200).json({ access_token, 'message': 'Successfully signin.' })
       }
     }  
   } catch (error) {

@@ -4,7 +4,7 @@
   "description": "Authentication through json web token.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon indexnpm.js"
+    "start": "nodemon index.js"
   },
   "author": "Sinethemba Dlova",
   "license": "ISC",

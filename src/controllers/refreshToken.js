@@ -2,16 +2,23 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res) => {
+    console.log('REFRESHING!!!');
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.status(401).json({ 'mmessage': 'Please provide refresh token.' });
+    console.log('Cookies: ', cookies);
+
+    if (!cookies?.jwt) return res.status(401).json({ 'message': 'Please provide refresh token.' });
     const refresh_token = cookies.jwt;
 
     const found_user = await User.find({ refresh_token })
+    console.log('found user', found_user);
+
     if (found_user.length <= 0) return res.status(403).json({ 'message': 'This token is not valid.' });
+
     jwt.verify(
         refresh_token,
         process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
+            console.log('refreshing: ', decoded);
             if (err || found_user.username !== decoded.username) return res.status(403).json({ 'message': 'Failed to refresh token.'});
             const access_token = jwt.sign(
                 { "username": decoded.username },
