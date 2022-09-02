@@ -20,8 +20,10 @@ module.exports = async (req, res) => {
         const refresh_token = jwt.sign({ id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
         const updated_user = await User.findByIdAndUpdate({ _id: id }, { refresh_token }, { upsert:true });
         res.cookie('jwt', refresh_token, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
-        res.status(200).json({ access_token, 'message': 'Successfully signin.' })
+        return res.status(200).json({ access_token, 'message': 'Successfully signin.' })
       }
+      return res.status(403).json({ access_token, 'message': 'Username or password is incorrrect.' })
+
     }  
   } catch (error) {
     res.status(401).json({ error, ' message': error.message });
